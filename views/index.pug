@@ -5,23 +5,15 @@ block content
     nav(class = 'navbar navbar-expand-lg bg-light')
       .container
         a(href='' class="navbar-brand") Library
+        button.btn.btn-primary(data-toggle="modal" data-target='#filter') Filter due date
+        .col-1
+        button.btn.btn-primary(data-toggle="modal" data-target='#inStock') In stock
+        .col-1
+        form( method='POST' action='/showAll')
+              button.btn.btn-primary(type='submit' data-toggle="modal" data-target='#showAll') Show all
         button(class='btn btn-outline-success ml-auto' data-toggle="modal" data-target="#addBook") Add book
 
   main
-    section.container.mt-5
-      .row
-        .col-3
-          select(class='custom-select')
-            option(selected) Due date
-            option(value='today') Today
-            option(value='tomorrow') Tomorrow
-            option(value='week') This week
-            option(value='month') This month
-        .col.d-flex.align-items-center
-          div(class='custom-control custom-checkbox')
-            input(type='checkbox' class='custom-control-input' id='inLibrary')
-            label(class='custom-control-label' for='inLibrary') In stock
-
     section.container.mt-4
       .row
         for book in books
@@ -58,7 +50,7 @@ block content
             button.close(type='button' data-dismiss="modal" aria-label="Close")
               span(aria-hidden="true") &times;
           .modal-body
-            form(method='POST' action='/add-book')
+            form( method='POST' action='/add-book')
               .form-group
                 label Title
                 input.form-control#name(type="text" placeholder="Enter book's title" name="title")
@@ -76,6 +68,41 @@ block content
                 input.form-control#year(type="text" placeholder="Enter link" name="cover")
 
               button.btn.btn-primary(type='submit') Save
+
+
+    .modal.fade#filter(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+      .modal-dialog(role="document")
+        .modal-content
+          .modal-header
+            h3.modal-title Filter books
+            button.close(type='button' data-dismiss="modal" aria-label="Close")
+              span(aria-hidden="true") &times;
+          .modal-body
+           form( method='POST' action='/filter')
+              .form-group
+                label Due date
+                input.form-control#year(type="date" placeholder="Enter date" name="dueDate")
+
+              button.btn.btn-primary(type='submit') Filter
+
+    .modal.fade#inStock(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+      .modal-dialog(role="document")
+        .modal-content
+          .modal-header
+             h3.modal-title Filter books
+              button.close(type='button' data-dismiss="modal" aria-label="Close")
+                span(aria-hidden="true") &times;
+          .modal-body
+           form( method='POST' action='/inStock')
+
+              .form-group
+                div(class='custom-control custom-checkbox')
+                  input(type='checkbox' class='custom-control-input' id='inLibrary' name='inLibrary')
+                  label(class='custom-control-label' for='inLibrary') In stock
+
+              button.btn.btn-primary(type='submit') Filter
+            
+            
 
   script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
   script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js")

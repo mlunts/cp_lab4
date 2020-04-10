@@ -9,7 +9,7 @@
     "inLibrary": {
       "status": false,
       "reader": "Marina",
-      "due": "10/05/2020"
+      "due": "2020-05-03"
     }
   },
   {
@@ -55,7 +55,7 @@
     "inLibrary": {
       "status": false,
       "reader": "Natasha",
-      "due": "05/05/2020"
+      "due": "2020-04-22"
     }
   },
   {
@@ -68,7 +68,7 @@
     "inLibrary": {
       "status": false,
       "reader": "Ilya",
-      "due": "29/05/2020"
+      "due": "2020-05-19"
     }
   },
   {
