@@ -41,8 +41,7 @@ router.post('/showAll', function(req, res) {
   res.redirect('/')
 });
 
-router.post('/inStock', function(req, res) {
-  
+router.post('/inStock', function(req, res) { 
   books = JSON.parse(json_books);
 
   let filteredBooks = []
@@ -62,6 +61,56 @@ router.post('/inStock', function(req, res) {
   }
   
   res.redirect('/')
+});
+
+router.post('/return', function(req, res) { 
+  books = JSON.parse(json_books);
+  let bookId = req.body.bookId
+
+  let updatedBooks = []
+  for (let index = 0; index < Object.keys(books).length; index++) {
+    let book = books[index]
+
+    if (book['id'] != bookId) {
+      updatedBooks.push(book)
+    } else {
+      book['inLibrary']['status'] = true 
+      updatedBooks.push(book)
+    }
+  }
+
+  books = updatedBooks
+  const json = JSON.stringify(updatedBooks);
+  fs.writeFileSync('./books.json', json, 'utf-8');
+
+  res.redirect('/');
+});
+
+router.post('/take', function(req,res) {
+  books = JSON.parse(json_books);
+  let bookId = req.body.dropDown
+  let due = req.body.due
+  let reader = req.body.reader
+
+  let updatedBooks = []
+  for (let index = 0; index < Object.keys(books).length; index++) {
+    let book = books[index]
+
+    if (book['id'] != bookId) {
+      updatedBooks.push(book)
+    } else {
+      book['inLibrary']['status'] = false
+      book['inLibrary']['reader'] = reader
+      book['inLibrary']['due'] = due
+      updatedBooks.push(book)
+    }
+  }
+
+  books = updatedBooks
+  const json = JSON.stringify(updatedBooks);
+  fs.writeFileSync('./books.json', json, 'utf-8');
+
+  res.redirect('/');
 });
 
 router.post('/add-book', (req, res) => {

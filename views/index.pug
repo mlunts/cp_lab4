@@ -14,6 +14,7 @@ block content
         button(class='btn btn-outline-success ml-auto' data-toggle="modal" data-target="#addBook") Add book
 
   main
+    
     section.container.mt-4
       .row
         for book in books
@@ -38,9 +39,11 @@ block content
                     p.card-text.mt-5 Country: #{book.country}
                   .card-footer.p-0
                     if book.inLibrary.status
-                      button(class='btn btn-success w-100 border-radius-0') Take this book
+                      button(class='btn btn-success w-100 border-radius-0' data-toggle="modal" data-target='#takeBook') Take this book
                     else
-                      button(class='btn btn-primary w-100 border-radius-0') Return this book
+                      form( method='POST' action='/return')
+                        input(type="hidden" name="bookId" value=book.id)
+                        button(class='btn btn-primary w-100 border-radius-0') Return this book
 
     .modal.fade#addBook(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
       .modal-dialog(role="document")
@@ -62,10 +65,10 @@ block content
                 input.form-control#year(type="number" placeholder="Enter year" name="year")
               .form-group
                 label Country
-                input.form-control#year(type="text" placeholder="Enter country" name="country")
+                input.form-control#country(type="text" placeholder="Enter country" name="country")
               .form-group
                 label Cover's image
-                input.form-control#year(type="text" placeholder="Enter link" name="cover")
+                input.form-control#cover(type="text" placeholder="Enter link" name="cover")
 
               button.btn.btn-primary(type='submit') Save
 
@@ -101,8 +104,30 @@ block content
                   label(class='custom-control-label' for='inLibrary') In stock
 
               button.btn.btn-primary(type='submit') Filter
-            
-            
+              
+    .modal.fade#takeBook(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+      .modal-dialog(role="document")
+        .modal-content
+          .modal-header
+             h3.modal-title Take this book 
+              button.close(type='button' data-dismiss="modal" aria-label="Close")
+                span(aria-hidden="true") &times;
+          .modal-body
+           form( method='POST' action='/take')
+              .form-group
+                label Select book
+                select(class='custom-select' name='dropDown')
+                  for book in books
+                    option(value=book.id) #{book.title}
+              .form-group
+                label Reader's name 
+                input.form-control#name(type="text" placeholder="Enter your name" name="reader")
+              .form-group
+                label Due date
+                input.form-control#year(type="date" placeholder="Enter date" name="due")
 
+              button.btn.btn-primary(type='submit') Take
+            
+  
   script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
   script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js")
