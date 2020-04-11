@@ -113,6 +113,27 @@ router.post('/take', function(req,res) {
   res.redirect('/');
 });
 
+router.post('/delete', function(req,res) {
+  books = JSON.parse(json_books);
+  let bookId = req.body.dropDownToDelete
+  
+  let updatedBooks = []
+  for (let index = 0; index < Object.keys(books).length; index++) {
+    let book = books[index]
+
+    if (book['id'] != bookId) {
+      updatedBooks.push(book)
+    }
+  }
+
+  books = updatedBooks
+  console.log(books)
+  const json = JSON.stringify(updatedBooks);
+  fs.writeFileSync('./books.json', json, 'utf-8');
+
+  res.redirect('/');
+});
+
 router.post('/add-book', (req, res) => {
 
   const { title, author, cover, year, country } = req.body;
